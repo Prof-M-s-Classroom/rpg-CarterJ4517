@@ -22,7 +22,9 @@ class GameDecisionTree:
         # TODO: Assign left and right children based on left_event and right_event
         # TODO: Set root if it's the first node inserted
         if not(event_number in self.nodes):
-            temp = StoryNode(event_number, description, left_event, right_event)
+            temp = StoryNode(event_number, description)
+            temp.left_event = left_event
+            temp.right_event = right_event
             if self.root is not None:
                 self.nodes[event_number] = temp
             else:
@@ -38,17 +40,24 @@ class GameDecisionTree:
         temp = self.root
         while temp is not None:
             print(temp.description)
-            decision = input("What do you choose?")
+            decision = input("")
             flag = 0
             while flag == 0:
-                if decision == 1:
+                if int(decision) == 1:
                     flag = 1
-                    temp = self.nodes[temp.left]
-                elif decision == 2:
+                    if temp.left_event != -1:
+                        temp = self.nodes[temp.left_event]
+                    else:
+                        temp = None
+                elif int(decision) == 2:
                     flag = 1
-                    temp = self.nodes[temp.right]
+                    if temp.right_event != -1:
+                        temp = self.nodes[temp.right_event]
+                    else:
+                        temp = None
                 else:
-                    decision = input("Please type either '1' or '2'")
+                    decision = input("Please type either '1' or '2'\n")
+        print("You have reached the end of the game. Please run the program again to play again.")
 
 def load_story(filename, game_tree):
     """Load story from a file and construct the decision tree."""
@@ -60,20 +69,20 @@ def load_story(filename, game_tree):
         line = file.readline()
         while line:
             substrings = line.split(' | ')
-            event_number = int(substrings(1))
-            description = substrings(2)
-            left_event = int(substrings(3))
-            right_event = int(substrings(4))
+            event_number = int(substrings[0])
+            description = substrings[1]
+            left_event = int(substrings[2])
+            right_event = int(substrings[3])
             game_tree.insert(event_number, description, left_event, right_event)
             line = file.readline()
 
 # Main program
 if __name__ == "__main__":
-    print("TODO: Initialize the GameDecisionTree and load story data")
+    # print("TODO: Initialize the GameDecisionTree and load story data")
     game_tree = GameDecisionTree()
 
-    print("TODO: Load the story from 'story.txt'")
+    # print("TODO: Load the story from 'story.txt'")
     load_story("story.txt", game_tree)
 
-    print("TODO: Start the RPG game")
+    # print("TODO: Start the RPG game")
     game_tree.play_game()
