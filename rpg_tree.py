@@ -43,13 +43,13 @@ class GameDecisionTree:
             decision = input("")
             flag = 0
             while flag == 0:
-                if int(decision) == 1:
+                if is_int(decision) and int(decision) == 1:
                     flag = 1
                     if temp.left_event != -1:
                         temp = self.nodes[temp.left_event]
                     else:
                         temp = None
-                elif int(decision) == 2:
+                elif is_int(decision) and int(decision) == 2:
                     flag = 1
                     if temp.right_event != -1:
                         temp = self.nodes[temp.right_event]
@@ -65,16 +65,25 @@ def load_story(filename, game_tree):
     # TODO: Open the file and read line by line
     # TODO: Split each line into event_number, description, left_event, right_event
     # TODO: Call game_tree.insert() for each event to build the tree
-    with open('story.txt', 'r') as file:
+    with open('story_custom.txt', 'r') as file:
         line = file.readline()
         while line:
             substrings = line.split(' | ')
             event_number = int(substrings[0])
             description = substrings[1]
+            description = description.replace('\\n', '\n')
             left_event = int(substrings[2])
             right_event = int(substrings[3])
             game_tree.insert(event_number, description, left_event, right_event)
+            print(description + "\n")
             line = file.readline()
+
+def is_int(s):
+    try:
+        int(s)
+        return True
+    except ValueError:
+        return False
 
 # Main program
 if __name__ == "__main__":
