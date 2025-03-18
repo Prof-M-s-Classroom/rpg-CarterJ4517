@@ -65,7 +65,7 @@ def load_story(filename, game_tree):
     # TODO: Open the file and read line by line
     # TODO: Split each line into event_number, description, left_event, right_event
     # TODO: Call game_tree.insert() for each event to build the tree
-    with open('story_custom.txt', 'r') as file:
+    with open('story.txt', 'r') as file:
         line = file.readline()
         while line:
             substrings = line.split(' | ')
@@ -75,7 +75,6 @@ def load_story(filename, game_tree):
             left_event = int(substrings[2])
             right_event = int(substrings[3])
             game_tree.insert(event_number, description, left_event, right_event)
-            print(description + "\n")
             line = file.readline()
 
 def is_int(s):
